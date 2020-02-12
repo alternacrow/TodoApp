@@ -56,6 +56,10 @@ const App: FC = () => {
     setTodos(todos => [...todos, todo]);
   };
 
+  const deleteTodo = (id: number) => {
+    setTodos(todos => todos.filter(todo => todo.id !== id));
+  };
+
   const resetInput = () => {
     setTitle("");
     setDescription("");
@@ -73,7 +77,7 @@ const App: FC = () => {
     if (!title || !description) return;
 
     const newTodo: Todo = {
-      id: todos[todos.length - 1].id + 1,
+      id: todos.length === 0 ? 1 : todos[todos.length - 1].id + 1,
       title,
       description,
       done: false
@@ -81,6 +85,10 @@ const App: FC = () => {
     addTodo(newTodo);
 
     changeMode("list");
+  };
+
+  const handleDelete = (id: number) => {
+    deleteTodo(id);
   };
 
   useEffect(() => {
@@ -110,12 +118,19 @@ const App: FC = () => {
             renderItem={({ item: todo }) => {
               return (
                 <View style={styles.todo_container}>
-                  <Text numberOfLines={1} style={styles.todo_title}>
-                    {todo.title}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.todo_description}>
-                    {todo.description}
-                  </Text>
+                  <View>
+                    <Text numberOfLines={1} style={styles.todo_title}>
+                      {todo.title}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.todo_description}>
+                      {todo.description}
+                    </Text>
+                  </View>
+                  <View style={styles.cross_button}>
+                    <TouchableOpacity onPress={() => handleDelete(todo.id)}>
+                      <Text style={styles.cross}>×</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               );
             }}
@@ -191,8 +206,10 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   todo_container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     height: 90,
-    justifyContent: "center",
     paddingHorizontal: 25,
     borderBottomWidth: 1,
     borderColor: "gray"
@@ -250,5 +267,13 @@ const styles = StyleSheet.create({
   add: {
     fontSize: 24,
     color: "white"
+  },
+  cross_button: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  cross: {
+    fontSize: 32,
+    color: "coral"
   }
 });
