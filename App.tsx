@@ -52,11 +52,29 @@ const App: FC = () => {
     setMode(mode);
   };
 
+  const addTodo = (todo: Todo) => {
+    setTodos(todos => [...todos, todo]);
+  };
+
   const handlePlus = () => {
     changeMode("add");
   };
 
   const handleCancel = () => {
+    changeMode("list");
+  };
+
+  const handleAdd = () => {
+    if (!title || !description) return;
+
+    const newTodo: Todo = {
+      id: todos[todos.length - 1].id + 1,
+      title,
+      description,
+      done: false
+    };
+    addTodo(newTodo);
+
     changeMode("list");
   };
 
@@ -120,7 +138,7 @@ const App: FC = () => {
             />
           </View>
           <View style={styles.add_button}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleAdd()}>
               <Text style={styles.add}>Add</Text>
             </TouchableOpacity>
           </View>
