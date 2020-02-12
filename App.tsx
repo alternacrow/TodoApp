@@ -53,6 +53,10 @@ const App: FC = () => {
     changeMode("add");
   };
 
+  const handleCancel = () => {
+    changeMode("list");
+  };
+
   useEffect(() => {
     setTodos(SAMPLE_TODOS);
   }, []);
@@ -90,7 +94,7 @@ const App: FC = () => {
       <Modal visible={mode === "add"} animationType={"slide"}>
         <View style={styles.modal}>
           <View style={styles.cancel_button}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleCancel()}>
               <Text style={styles.cancel}>Cancel</Text>
             </TouchableOpacity>
           </View>
