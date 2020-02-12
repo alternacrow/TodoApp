@@ -1,15 +1,50 @@
-import React, { FC, Fragment } from "react";
+import React, { FC, Fragment, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
   Modal,
   SafeAreaView
 } from "react-native";
 
+type Todo = {
+  id: number;
+  title: string;
+  description: string;
+  done: boolean;
+};
+
+const SAMPLE_TODOS: Todo[] = [
+  {
+    id: 1,
+    title: "todo 1",
+    description: "description 1",
+    done: false
+  },
+  {
+    id: 2,
+    title: "todo 2",
+    description: "description 2",
+    done: false
+  },
+  {
+    id: 3,
+    title: "todo 3",
+    description: "description 3",
+    done: false
+  }
+];
+
 const App: FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    setTodos(SAMPLE_TODOS);
+  }, []);
+
   return (
     <Fragment>
       <SafeAreaView style={styles.safearea}>
@@ -22,18 +57,23 @@ const App: FC = () => {
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.todo_container}>
-            <Text style={styles.todo_title}>todo 1</Text>
-            <Text style={styles.todo_description}>description 1</Text>
-          </View>
-          <View style={styles.todo_container}>
-            <Text style={styles.todo_title}>todo 2</Text>
-            <Text style={styles.todo_description}>description 2</Text>
-          </View>
-          <View style={styles.todo_container}>
-            <Text style={styles.todo_title}>todo 3</Text>
-            <Text style={styles.todo_description}>description 3</Text>
-          </View>
+
+          <FlatList
+            data={todos}
+            renderItem={({ item: todo }) => {
+              return (
+                <View style={styles.todo_container}>
+                  <Text numberOfLines={1} style={styles.todo_title}>
+                    {todo.title}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.todo_description}>
+                    {todo.description}
+                  </Text>
+                </View>
+              );
+            }}
+            keyExtractor={(_, index) => index.toString()}
+          />
         </View>
       </SafeAreaView>
       <Modal visible={false} animationType={"slide"}>
