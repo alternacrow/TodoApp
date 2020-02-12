@@ -56,6 +56,11 @@ const App: FC = () => {
     setTodos(todos => [...todos, todo]);
   };
 
+  const resetInput = () => {
+    setTitle("");
+    setDescription("");
+  };
+
   const handlePlus = () => {
     changeMode("add");
   };
@@ -81,6 +86,12 @@ const App: FC = () => {
   useEffect(() => {
     setTodos(SAMPLE_TODOS);
   }, []);
+
+  useEffect(() => {
+    if (mode === "list") {
+      resetInput();
+    }
+  }, [mode]);
 
   return (
     <Fragment>
