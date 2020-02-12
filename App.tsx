@@ -45,6 +45,9 @@ const App: FC = () => {
 
   const [mode, setMode] = useState<Mode>("list");
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const changeMode = (mode: Mode) => {
     setMode(mode);
   };
@@ -99,11 +102,22 @@ const App: FC = () => {
             </TouchableOpacity>
           </View>
           <Text style={styles.title_add_todo}>Add Todo</Text>
+
           <View style={styles.textinput_frame}>
-            <TextInput placeholder={"Title"} style={styles.textinput} />
+            <TextInput
+              placeholder={"Title"}
+              value={title}
+              onChangeText={text => setTitle(text)}
+              style={styles.textinput}
+            />
           </View>
           <View style={styles.textinput_frame}>
-            <TextInput placeholder={"Description"} style={styles.textinput} />
+            <TextInput
+              placeholder={"Description"}
+              value={description}
+              onChangeText={text => setDescription(text)}
+              style={styles.textinput}
+            />
           </View>
           <View style={styles.add_button}>
             <TouchableOpacity>
