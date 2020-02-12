@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  SafeAreaView
+  SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 
 type Todo = {
@@ -41,12 +42,17 @@ const SAMPLE_TODOS: Todo[] = [
 type Mode = "list" | "add";
 
 const App: FC = () => {
+  const [ready, setReady] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
-
   const [mode, setMode] = useState<Mode>("list");
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  const getReady = () => {
+    setTodos(SAMPLE_TODOS);
+
+    setReady(true);
+  };
 
   const changeMode = (mode: Mode) => {
     setMode(mode);
@@ -92,7 +98,7 @@ const App: FC = () => {
   };
 
   useEffect(() => {
-    setTodos(SAMPLE_TODOS);
+    getReady();
   }, []);
 
   useEffect(() => {
@@ -113,29 +119,40 @@ const App: FC = () => {
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>
           </View>
-          <FlatList
-            data={todos}
-            renderItem={({ item: todo }) => {
-              return (
-                <View style={styles.todo_container}>
-                  <View>
-                    <Text numberOfLines={1} style={styles.todo_title}>
-                      {todo.title}
-                    </Text>
-                    <Text numberOfLines={1} style={styles.todo_description}>
-                      {todo.description}
-                    </Text>
+          {ready ? (
+            <FlatList
+              data={todos}
+              renderItem={({ item: todo }) => {
+                return (
+                  <View style={styles.todo_container}>
+                    <View>
+                      <Text numberOfLines={1} style={styles.todo_title}>
+                        {todo.title}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.todo_description}>
+                        {todo.description}
+                      </Text>
+                    </View>
+                    <View style={styles.cross_button}>
+                      <TouchableOpacity onPress={() => handleDelete(todo.id)}>
+                        <Text style={styles.cross}>×</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.cross_button}>
-                    <TouchableOpacity onPress={() => handleDelete(todo.id)}>
-                      <Text style={styles.cross}>×</Text>
-                    </TouchableOpacity>
-                  </View>
+                );
+              }}
+              ListEmptyComponent={() => (
+                <View style={styles.empty_container}>
+                  <Text style={styles.empty}>Add Todo !!</Text>
                 </View>
-              );
-            }}
-            keyExtractor={(_, index) => index.toString()}
-          />
+              )}
+              keyExtractor={(_, index) => index.toString()}
+            />
+          ) : (
+            <View style={styles.loading_container}>
+              <ActivityIndicator size={"large"} />
+            </View>
+          )}
         </View>
       </SafeAreaView>
       <Modal visible={mode === "add"} animationType={"slide"}>
@@ -220,6 +237,21 @@ const styles = StyleSheet.create({
   todo_description: {
     fontSize: 16,
     marginTop: 5
+  },
+  loading_container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  empty_container: {
+    marginTop: 20,
+    borderColor: "gray",
+    alignItems: "center"
+  },
+  empty: {
+    fontSize: 20,
+    fontWeight: "400",
+    color: "darkgray"
   },
   textinput_frame: {
     alignItems: "center",
