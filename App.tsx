@@ -38,8 +38,20 @@ const SAMPLE_TODOS: Todo[] = [
   }
 ];
 
+type Mode = "list" | "add";
+
 const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+
+  const [mode, setMode] = useState<Mode>("list");
+
+  const changeMode = (mode: Mode) => {
+    setMode(mode);
+  };
+
+  const handlePlus = () => {
+    changeMode("add");
+  };
 
   useEffect(() => {
     setTodos(SAMPLE_TODOS);
@@ -53,11 +65,10 @@ const App: FC = () => {
             <Text style={styles.title_todo_list}>Todo List</Text>
           </View>
           <View style={styles.plus_button}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handlePlus()}>
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>
           </View>
-
           <FlatList
             data={todos}
             renderItem={({ item: todo }) => {
@@ -76,7 +87,7 @@ const App: FC = () => {
           />
         </View>
       </SafeAreaView>
-      <Modal visible={false} animationType={"slide"}>
+      <Modal visible={mode === "add"} animationType={"slide"}>
         <View style={styles.modal}>
           <View style={styles.cancel_button}>
             <TouchableOpacity>
