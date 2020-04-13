@@ -33,7 +33,7 @@ Expo を使わず、@react-native-community/cli の使用をおすすめしま�
 # ToDo アプリを作ってみよう
 
 レポジトリはこちら  
-https://github.com/kazuaki21/TodoApp
+https://github.com/alternacrow/TodoApp
 
 ## デバッグについて
 
@@ -90,7 +90,7 @@ Expo Client が立ち上がって、実機でアプリを起動、動作確認�
 
 ## 画面構成
 
-| <img src="./assets/list.png" /> | <img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/234154/8f88082c-4569-5db4-442c-1c7fcf04cabe.png" /> |
+| <img src="./assets/list.png" /> | <img src="./assets/add.png" /> |
 | :-----------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
 
 
